@@ -1,0 +1,41 @@
+﻿<div class="row">
+    <div class="col-md-2">
+        &nbsp;
+    </div>
+    <div class="col-md-8">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Name</th>
+                    <th>Job Title</th>
+                    <th>Location</th>
+                    <th>E-mail</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="employee in employees">
+                    <td>
+                        {{ employee.employeeId }}
+                    </td>
+                    <td>
+                        {{ employee.employeeName }}
+                    </td>
+                    <td>
+                        {{ employee.jobTitle }}
+                    </td>
+                    <td>
+                        {{ employee.location }}
+                    </td>
+                    <td>
+                        {{ employee.email }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-2">
+        &nbsp;
+    </div>
+</div>
