@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using Newtonsoft.Json.Serialization;
 
 namespace EmployeeDirectory.API
@@ -18,6 +19,10 @@ namespace EmployeeDirectory.API
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            // add CORS support 
+            var corsAttribute = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors(corsAttribute);
 
             // set json serialization settings eg. camel case
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();

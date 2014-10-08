@@ -1,11 +1,12 @@
 ﻿using System;
-using EmployeeDirectory.API.Providers;
+using System.Web.Http;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
-using System.Web.Http;
+using EmployeeDirectory.API;
+using EmployeeDirectory.API.Providers;
 
-[assembly: OwinStartup(typeof(EmployeeDirectory.API.Startup))]
+[assembly: OwinStartup(typeof(Startup))]
 namespace EmployeeDirectory.API
 {
     public class Startup

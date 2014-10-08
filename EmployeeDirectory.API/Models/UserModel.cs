@@ -1,11 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
 
 namespace EmployeeDirectory.API.Models
 {
     public class UserModel
     {
         [Required]
-        [Display(Name = "User Name")]
+        [Display(Name = "User name")]
         public string UserName { get; set; }
 
         [Required]

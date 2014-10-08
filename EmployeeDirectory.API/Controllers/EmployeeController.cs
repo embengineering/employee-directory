@@ -1,45 +1,36 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
+using EmployeeDirectory.API.ModelFactories;
+using EmployeeDirectory.API.Repositories;
 
 namespace EmployeeDirectory.API.Controllers
 {
-    [RoutePrefix("api/Employee")]
+    [EnableCors("*", "*", "*")]
+    [RoutePrefix("api/employee")]
     public class EmployeeController : ApiController
     {
+        private readonly EmployeeRepository _repo;
+        private readonly EmployeeModelFactory _modelFactory;
+
+        public EmployeeController()
+        {
+            _repo = new EmployeeRepository();
+            _modelFactory = new EmployeeModelFactory();
+        }
+
+        // GET api/employee/all
         [Authorize]
-        [Route("All")]
+        [Route("all")]
         public IHttpActionResult Get()
         {
-            return Ok(Order.CreateEmployees());
+            var query = _repo.GetAll();
+
+            var results = query
+                .ToList().OrderByDescending(s => s.Id)
+                .Select(s => _modelFactory.Create(s));
+
+            return Ok(results);
         }
     }
-
-    #region Helpers
-
-    public class Order
-    {
-        public int EmployeeId { get; set; }
-        public string EmployeeName { get; set; }
-        public string JobTitle { get; set; }
-        public string Location { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Picture { get; set; }
-
-        public static List<Order> CreateEmployees()
-        {
-            var orderList = new List<Order> 
-            {
-                new Order {EmployeeId = 10248, EmployeeName = "Taiseer Joudeh", JobTitle = "Amman" },
-                new Order {EmployeeId = 10249, EmployeeName = "Ahmad Hasan", JobTitle = "Dubai" },
-                new Order {EmployeeId = 10250,EmployeeName = "Tamer Yaser", JobTitle = "Jeddah"},
-                new Order {EmployeeId = 10251,EmployeeName = "Lina Majed", JobTitle = "Abu Dhabi" },
-                new Order {EmployeeId = 10252,EmployeeName = "Yasmeen Rami", JobTitle = "Kuwait" }
-            };
-
-            return orderList;
-        }
-    }
-
-    #endregion
 }

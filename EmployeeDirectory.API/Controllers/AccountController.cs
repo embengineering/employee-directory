@@ -1,11 +1,13 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
-using EmployeeDirectory.API.Models;
-using EmployeeDirectory.API.Repository;
+using System.Web.Http.Cors;
 using Microsoft.AspNet.Identity;
+using EmployeeDirectory.API.Models;
+using EmployeeDirectory.API.Repositories;
 
 namespace EmployeeDirectory.API.Controllers
 {
+    [EnableCors("*", "*", "*")]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
@@ -43,7 +45,6 @@ namespace EmployeeDirectory.API.Controllers
             base.Dispose(disposing);
         }
 
-        // handle errors
         private IHttpActionResult GetErrorResult(IdentityResult result)
         {
             if (result == null)
