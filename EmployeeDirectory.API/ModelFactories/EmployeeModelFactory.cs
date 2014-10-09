@@ -1,20 +1,15 @@
 ﻿using System;
-using EmployeeDirectory.API.Entities;
 using EmployeeDirectory.API.Models;
 
 namespace EmployeeDirectory.API.ModelFactories
 {
     public class EmployeeModelFactory
     {
-        public EmployeeModelFactory()
-        {
-        }
-
-        public EmployeeModel Create(Employee entity)
+        public EmployeeModel Create(ApplicationUser entity)
         {
             return new EmployeeModel()
             {
-                Id = entity.Id,
+                UserName = entity.UserName,
                 FirstName =  entity.FirstName,
                 MiddleInitial = entity.MiddleInitial,
                 LastName = entity.LastName,
@@ -26,13 +21,12 @@ namespace EmployeeDirectory.API.ModelFactories
             };
         }
 
-        public Employee Parse(EmployeeModel model)
+        public ApplicationUser Parse(EmployeeModel model)
         {
             try
             {
-                var entity = new Employee
+                var entity = new ApplicationUser
                 {
-                    Id = model.Id,
                     MiddleInitial = model.MiddleInitial,
                     LastName = model.LastName,
                     SecondLastName = model.SecondLastName,

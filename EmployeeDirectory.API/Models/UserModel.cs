@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace EmployeeDirectory.API.Models
 {
@@ -22,5 +18,17 @@ namespace EmployeeDirectory.API.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string FirstName { get; set; }
+
+        public string MiddleInitial { get; set; }
+        public string LastName { get; set; }
+        public string SecondLastName { get; set; }
+        public string JobTitle { get; set; }
+        public string Location { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }

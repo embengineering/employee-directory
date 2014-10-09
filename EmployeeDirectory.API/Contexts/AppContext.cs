@@ -1,29 +1,24 @@
 ﻿using System.Data.Entity;
 using EmployeeDirectory.API.ContextMigrations;
-using EmployeeDirectory.API.Entities;
-using EmployeeDirectory.API.Mappers;
+using EmployeeDirectory.API.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace EmployeeDirectory.API.Contexts
 {
-    public class AppContext : DbContext
+    public class AppContext : IdentityDbContext<ApplicationUser>
     {
-        public AppContext()
-            : base("AppContext")
+        public AppContext() : base("AppContext")
         {
             Configuration.ProxyCreationEnabled = false;
             Configuration.LazyLoadingEnabled = false;
 
-            // Enable to prepopulate database with dummy data
+            // enable to prepopulate database with dummy/initial data
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<AppContext, AppContextMigrationConfiguration>());
         }
 
-        public DbSet<Employee> Employees { get; set; }
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        public static AppContext Create()
         {
-            modelBuilder.Configurations.Add(new EmployeeMapper());
-
-            base.OnModelCreating(modelBuilder);
+            return new AppContext();
         }
     }
 }

@@ -1,8 +1,10 @@
-﻿namespace EmployeeDirectory.API.Models
+﻿using System.Collections.Generic;
+
+namespace EmployeeDirectory.API.Models
 {
     public class EmployeeModel
     {
-        public int Id { get; set; }
+        public string UserName { get; set; }
         public string FirstName { get; set; }
         public string MiddleInitial { get; set; }
         public string LastName { get; set; }

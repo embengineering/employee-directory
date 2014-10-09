@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using EmployeeDirectory.API.Contexts;
-using EmployeeDirectory.API.Entities;
+using EmployeeDirectory.API.Models;
 
 namespace EmployeeDirectory.API.Repositories
 {
@@ -14,21 +14,21 @@ namespace EmployeeDirectory.API.Repositories
             _ctx = new AppContext();
         }
 
-        public IQueryable<Employee> GetAll()
+        public IQueryable<ApplicationUser> GetAll()
         {
-            return _ctx.Employees.AsQueryable();
+            return _ctx.Users.AsQueryable().Take(500);
         }
 
-        public Employee GetEmployee(int id)
+        public ApplicationUser GetEmployee(int id)
         {
-            return _ctx.Employees.Find(id);
+            return _ctx.Users.Find(id);
         }
 
-        public bool InsertEmployee(Employee entity)
+        public bool InsertEmployee(ApplicationUser entity)
         {
             try
             {
-                _ctx.Employees.Add(entity);
+                _ctx.Users.Add(entity);
                 return true;
             }
             catch (Exception)
@@ -37,7 +37,7 @@ namespace EmployeeDirectory.API.Repositories
             }
         }
 
-        public bool UpdateEmployee(Employee originalEntity, Employee updatedEntity)
+        public bool UpdateEmployee(ApplicationUser originalEntity, ApplicationUser updatedEntity)
         {
             _ctx.Entry(originalEntity).CurrentValues.SetValues(updatedEntity);
             return true;
@@ -47,10 +47,10 @@ namespace EmployeeDirectory.API.Repositories
         {
             try
             {
-                var entity = _ctx.Employees.Find(id);
+                var entity = _ctx.Users.Find(id);
                 if (entity != null)
                 {
-                    _ctx.Employees.Remove(entity);
+                    _ctx.Users.Remove(entity);
                     return true;
                 }
             }

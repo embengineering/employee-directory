@@ -12,12 +12,10 @@ namespace EmployeeDirectory.API.ContextMigrations
             AutomaticMigrationDataLossAllowed = true;
         }
 
-#if DEBUG
         protected override void Seed(AppContext context)
         {
-            new EmployeeSeeder(context).Seed();
+            new RolesSeeder(context).Seed();
         }
-#endif
 
     }
 }
