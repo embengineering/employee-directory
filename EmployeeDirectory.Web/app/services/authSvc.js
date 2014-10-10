@@ -1,19 +1,19 @@
 ﻿'use strict';
-app.factory('authSvc', ['$http', '$q', 'localStorageService', function ($http, $q, localStorageService) {
+app.factory('authSvc', ['$http', '$q', 'localStorageService', 'globalProperties', 'permissionSvc', function ($http, $q, localStorageService, globalProperties, permissionSvc) {
 
-    var serviceBase = 'http://localhost/employees.svc/';
     var authServiceFactory = {};
 
     var authentication = {
         isAuth: false,
-        userName: ""
+        userName: '',
+        userRoles: []
     };
 
     var saveRegistration = function (registration) {
 
         logOut();
 
-        return $http.post(serviceBase + 'api/account/register', registration).then(function (response) {
+        return $http.post(globalProperties.serviceBaseUrl + 'api/account/register', registration).then(function (response) {
             return response;
         });
 
@@ -25,12 +25,23 @@ app.factory('authSvc', ['$http', '$q', 'localStorageService', function ($http, $
 
         var deferred = $q.defer();
 
-        $http.post(serviceBase + 'token', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function (response) {
+        $http.post(globalProperties.serviceBaseUrl + 'token', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function (response) {
 
-            localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
+            var userRoles = JSON.parse(response.userRoles) || ['EMPLOYEE'];
 
+            localStorageService.set('authorizationData', {
+                token: response.access_token,
+                userName: loginData.userName,
+                userRoles: userRoles
+            });
+
+            // set authentication properties
             authentication.isAuth = true;
             authentication.userName = loginData.userName;
+            authentication.userRoles = userRoles;
+
+            // set permissions
+            permissionSvc.setPermissions(userRoles);
 
             deferred.resolve(response);
 
@@ -49,6 +60,7 @@ app.factory('authSvc', ['$http', '$q', 'localStorageService', function ($http, $
 
         authentication.isAuth = false;
         authentication.userName = "";
+        authentication.userRoles = [];
 
     };
 
@@ -58,6 +70,8 @@ app.factory('authSvc', ['$http', '$q', 'localStorageService', function ($http, $
         if (authData) {
             authentication.isAuth = true;
             authentication.userName = authData.userName;
+            authentication.userRoles = authData.userRoles;
+            permissionSvc.setPermissions(authData.userRoles);
         }
 
     }

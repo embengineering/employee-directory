@@ -24,24 +24,12 @@ namespace EmployeeDirectory.API.Seeders
             var userManager = new UserManager<ApplicationUser>(userStore);
 
             // define default system administrator user if doesn't exist
-            var user = userManager.FindByEmail("admin@example.com");
+            var user = userManager.FindByEmail("hr@demo.com");
             if (user == null)
             {
                 // create default/initial system roles
-                roleManager.Create(new ApplicationRole { Name = "SYSADMIN", Description = "System Administrator" });
                 roleManager.Create(new ApplicationRole { Name = "HR", Description = "Human Resource" });
                 roleManager.Create(new ApplicationRole { Name = "EMPLOYEE", Description = "Employee" });
-
-                // sysadmin user
-                user = new ApplicationUser
-                {
-                    UserName = "sysadmin@demo.com",
-                    FirstName = "System",
-                    LastName = "Administrator",
-                    Email = "admin@example.com"
-                };
-                userManager.Create(user, "welcome");
-                userManager.AddToRole(user.Id, "SYSADMIN");
 
                 // hr user
                 user = new ApplicationUser

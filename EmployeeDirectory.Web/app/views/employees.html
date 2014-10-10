@@ -1,41 +1,43 @@
-﻿<div class="row">
-    <div class="col-md-2">
-        &nbsp;
+﻿<div class="container-fluid">
+    <div class="page-header">
+        <h1>
+            Employees
+            <button class="btn btn-sm btn-primary"
+                    data-ng-click="addEmployee()">
+                <span class="glyphicon glyphicon-plus"></span> Add Employee
+            </button>
+        </h1>
     </div>
-    <div class="col-md-8">
-        <table class="table table-striped table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>Employee ID</th>
-                    <th>Name</th>
-                    <th>Job Title</th>
-                    <th>Location</th>
-                    <th>E-mail</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr data-ng-repeat="employee in employees">
-                    <td>
-                        {{ employee.employeeId }}
-                    </td>
-                    <td>
-                        {{ employee.employeeName }}
-                    </td>
-                    <td>
-                        {{ employee.jobTitle }}
-                    </td>
-                    <td>
-                        {{ employee.location }}
-                    </td>
-                    <td>
-                        {{ employee.email }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <div kendo-listview k-data-source="source" k-template="listViewTemplate" class="row"></div>
+    <div kendo-pager k-data-source="source"></div>
 
-    <div class="col-md-2">
-        &nbsp;
-    </div>
+    <script type="text/x-kendo-angular-template" id="employeeListTemplate">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">{{ dataItem.firstName }} {{ dataItem.lastName }} ({{ dataItem.role || 'No Role Assigned' }})</div>
+                </div>
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <h4>{{ dataItem.jobTitle }}</h4>
+                        {{ dataItem.email }}
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <!-- if the user has HR permission then show button -->
+                    <button type="button" class="btn btn-sm btn-primary btn-sm"
+                            data-has-permission='HR'
+                            data-ng-click="editEmployee(dataItem.id)">
+                        <span class="glyphicon glyphicon-pencil"></span> Modify
+                    </button>
+                    <!-- if the user has HR permission then show button -->
+                    <button type="button" class="btn btn-sm btn-danger btn-sm"
+                            data-has-permission='HR'
+                            data-ng-click="deleteEmployee(dataItem.id)">
+                        <span class="glyphicon glyphicon-trash"></span> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </script>
 </div>

@@ -1,13 +1,17 @@
 ﻿<!DOCTYPE html>
-<html data-ng-app="AngularAuthApp">
+<html data-ng-app="EmployeeDirectoryApp">
 <head>
     <meta content="IE=edge, chrome=1" http-equiv="X-UA-Compatible" />
     <title>Employee Directory</title>
     <link rel="shortcut icon" href="favicon.ico" />
-    <link href="content/css/bootstrap.min.css" rel="stylesheet" />
-    <!--<link href="content/css/site.css" rel="stylesheet" />-->
-    <link href="content/css/loading-bar.min.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <!-- 3rd party libraries -->
+    <link href="content/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="content/css/loading-bar.min.css" rel="stylesheet" />
+    <link href="content/css/kendo/kendo.common.min.css" rel="stylesheet" />
+    <link href="content/css/kendo/kendo.flat.min.css" rel="stylesheet" />
+    <!-- Load app main css -->
+    <link href="content/css/site.css" rel="stylesheet" />
 </head>
 <body>
     <div class="navbar navbar-default navbar-fixed-top" role="navigation" data-ng-controller="indexCtrl">
@@ -16,57 +20,76 @@
                 <button class="btn btn-success navbar-toggle" data-ng-click="navbarExpanded = !navbarExpanded">
                     <span class="glyphicon glyphicon-chevron-down"></span>
                 </button>
-                <a class="navbar-brand" href="#/">Home</a>
+                <a class="navbar-brand" href="#/">Directory</a>
             </div>
             <div class="collapse navbar-collapse" data-collapse="!navbarExpanded">
                 <ul class="nav navbar-nav navbar-right">
                     <li data-ng-hide="!authentication.isAuth"><a href="#">Welcome {{authentication.userName}}</a></li>
-                    <li data-ng-hide="!authentication.isAuth"><a href="#/employees">Employees</a></li>
+                    <!--<li data-ng-hide="!authentication.isAuth"><a href="#/employees">Employees</a></li>-->
                     <li data-ng-hide="!authentication.isAuth"><a href="" data-ng-click="logOut()">Logout</a></li>
-                    <li data-ng-hide="authentication.isAuth"> <a href="#/login">Login</a></li>
-                    <li data-ng-hide="authentication.isAuth"> <a href="#/signup">Sign Up</a></li>
+                    <!--<li data-ng-hide="authentication.isAuth"> <a href="#/login">Login</a></li>-->
+                    <!--<li data-ng-hide="authentication.isAuth"> <a href="#/signup">Sign Up</a></li>-->
                 </ul>
             </div>
-        </div>
-    </div>
-    <div class="jumbotron">
-        <div class="container">
-            <div class="page-header text-center">
-                <h1>Employee Directory</h1>
-            </div>
-            <p>This single page application is built using AngularJS, it is using OAuth bearer token authentication, ASP.NET Web API 2, OWIN middleware, and ASP.NET Identity to generate tokens and register users.</p>
         </div>
     </div>
     <div class="container">
         <div data-ng-view="">
         </div>
     </div>
+    
+    <!-- generic confirmation dialog 
+    <div class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure do you want to continue?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>-->
     <hr />
     <div id="footer">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <p class="text-muted text-right">Created by <a target="_blank" href="http://embprofile.weebly.com/">Emmanuel Morales</a></p>
+                    <p class="text-muted text-right">Created by <a target="_blank" href="http://embprofile.weebly.com/">EMB</a></p>
                 </div>
             </div>
         </div>
     </div>
     <!-- 3rd party libraries -->
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>
+    <script src="scripts/jquery-2.1.1.min.js"></script>
+    <script src="scripts/angular.min.js"></script>
+    <script src="scripts/angular-route.min.js"></script>
+    <script src="scripts/angular-animate.min.js"></script>
     <script src="scripts/angular-local-storage.min.js"></script>
     <script src="scripts/loading-bar.min.js"></script>
+    <script src="scripts/kendo/kendo.all.min.js"></script>
+    <script src="scripts/underscore-min.js"></script>
+    <script src="scripts/angular-underscore-module.js"></script>
     <!-- Load app main script -->
     <script src="app/app.js"></script>
+    <!-- Load directives -->
+    <script src="app/directives/hasPermission.js"></script>
     <!-- Load services -->
     <script src="app/services/authInterceptorSvc.js"></script>
     <script src="app/services/authSvc.js"></script>
+    <script src="app/services/permissionSvc.js"></script>
     <script src="app/services/employeeSvc.js"></script>
     <!-- Load controllers -->
     <script src="app/controllers/indexCtrl.js"></script>
-    <script src="app/controllers/homeCtrl.js"></script>
     <script src="app/controllers/loginCtrl.js"></script>
     <script src="app/controllers/signupCtrl.js"></script>
     <script src="app/controllers/employeeCtrl.js"></script>
+    <script src="app/controllers/manageEmployeeCtrl.js"></script>
 </body>
 </html>

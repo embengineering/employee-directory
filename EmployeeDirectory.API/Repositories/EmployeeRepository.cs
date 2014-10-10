@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using EmployeeDirectory.API.Contexts;
 using EmployeeDirectory.API.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace EmployeeDirectory.API.Repositories
 {
@@ -9,19 +12,22 @@ namespace EmployeeDirectory.API.Repositories
     {
         private readonly AppContext _ctx;
 
+        private readonly UserManager<ApplicationUser> _userManager;
+
         public EmployeeRepository()
         {
             _ctx = new AppContext();
+            _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_ctx));
         }
 
-        public IQueryable<ApplicationUser> GetAll()
+        public IQueryable<ApplicationUser> Get()
         {
-            return _ctx.Users.AsQueryable().Take(500);
+            return _ctx.Users.AsQueryable().Include("Roles");
         }
 
-        public ApplicationUser GetEmployee(int id)
+        public ApplicationUser GetEmployee(string id)
         {
-            return _ctx.Users.Find(id);
+            return _ctx.Users.Include("Roles").FirstOrDefault(x => x.Id == id);
         }
 
         public bool InsertEmployee(ApplicationUser entity)
@@ -37,17 +43,17 @@ namespace EmployeeDirectory.API.Repositories
             }
         }
 
-        public bool UpdateEmployee(ApplicationUser originalEntity, ApplicationUser updatedEntity)
+        public bool UpdateEmployee(ApplicationUser originalEmployee, EmployeeModel updatedEmployee)
         {
-            _ctx.Entry(originalEntity).CurrentValues.SetValues(updatedEntity);
+            _ctx.Entry(originalEmployee).CurrentValues.SetValues(updatedEmployee);
             return true;
         }
 
-        public bool DeleteEmployee(int id)
+        public bool DeleteEmployee(string id)
         {
             try
             {
-                var entity = _ctx.Users.Find(id);
+                var entity = _ctx.Users.FirstOrDefault(x => x.Id == id);
                 if (entity != null)
                 {
                     _ctx.Users.Remove(entity);

@@ -1,0 +1,82 @@
+﻿body {
+    padding-top: 50px;
+}
+
+.page-header button {
+    float: right;
+}
+
+.k-listview {
+    margin-bottom: -1px;
+    min-height: 510px;
+    border: 0;
+}
+
+.k-listview .card {
+    position: relative;
+    height: 200px;
+    margin: 0;
+    padding: 0;
+}
+
+.card-header {
+    height: 74px;
+    position: relative;
+}
+
+.card-header-logo {
+    width: 254px;
+    height: 68px;
+    position: absolute;
+    top: 4px;
+    left: 7px;
+}
+
+.card-content {
+    width: 100%;
+    height: auto;
+    padding: 0;
+    position: relative;
+}
+
+    .card-content h1 {
+        font-family: 'Muli', Helvetica, Arial, sans-serif;
+        font-weight: normal;
+        font-size: 26px;
+        margin: 2px 0 0 0;
+    }
+
+    .card-content h2 {
+        font-family: 'Muli', Helvetica, Arial, sans-serif;
+        font-weight: normal;
+        font-style: italic;
+        font-size: 18px;
+        color: #828587;
+        margin: 0;
+    }
+
+    .card-content h3 {
+        font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 22px;
+        margin: 0;
+    }
+
+    .card-content p {
+        line-height: 22px;
+        margin: 0;
+        padding-bottom: 14px;
+    }
+
+
+.card-about {
+    position: relative;
+}
+
+.card-about-image {
+    font-size: 80px;
+}
+
+.card-about-content {
+}

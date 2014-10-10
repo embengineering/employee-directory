@@ -2,6 +2,7 @@
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Web.OData.Extensions;
 using Newtonsoft.Json.Serialization;
 
 namespace EmployeeDirectory.API
@@ -20,9 +21,12 @@ namespace EmployeeDirectory.API
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            // add CORS support 
+            // enable CORS support 
             var corsAttribute = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(corsAttribute);
+
+            // enable query support
+            config.AddODataQueryFilter();
 
             // set json serialization settings eg. camel case
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();

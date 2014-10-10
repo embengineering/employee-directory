@@ -1,11 +1,25 @@
 ﻿'use strict';
-app.controller('indexCtrl', ['$scope', '$location', 'authSvc', function ($scope, $location, authService) {
+app.controller('indexCtrl', ['$scope', '$rootScope', '$location', 'authSvc', 'permissionSvc',
+    function ($scope, $rootScope, $location, authSvc, permissionSvc) {
 
+    // expose logOut method to the scope
     $scope.logOut = function () {
-        authService.logOut();
-        $location.path('/home');
+        authSvc.logOut();
+        $location.path('/login');
     }
 
-    $scope.authentication = authService.authentication;
+    // expose authentication to the scope
+    $scope.authentication = authSvc.authentication;
+
+    // when defining a route a new extra parameter “permission” is supported for the permission that it requires 
+    // then after that we will test in a routeChangeStart event to check if the user has permissions for that route
+    $scope.$on('$routeChangeStart', function (scope, next, current) {
+        if (next.$$route) {
+            var permission = next.$$route.permission;
+            if (_.isString(permission) && !permissionSvc.hasPermission(permission)) {
+                $location.path('/login');
+            }
+        }
+    });
 
 }]);
