@@ -177,15 +177,13 @@ function ($scope, $http, $location, globalProperties, employeeSvc) {
         // toggle sorting direction
         $scope.source.query({
             sort: {
-                field: "FirstName", dir: $scope.sortDir
+                field: 'FilterableFullName', dir: $scope.sortDir
             },
             filter: [
                 {
-                    logic: "or",
+                    logic: 'or',
                     filters: [
-                        { field: "FirstName", operator: "contains", value: value },
-                        { field: "LastName", operator: "contains", value: value },
-                        { field: "Email", operator: "contains", value: value }
+                        { field: 'FilterableFullName', operator: 'contains', value: value }
                     ]
                 }
             ],

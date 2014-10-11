@@ -50,7 +50,8 @@ namespace EmployeeDirectory.API.Controllers
                     Location = s.Location,
                     Email = s.Email,
                     PhoneNumber = s.PhoneNumber,
-                    Role = ""
+                    Role = "",
+                    FilterableFullName = s.FirstName + " " + s.MiddleInitial + " " + s.LastName + " " + s.SecondLastName
                 }), new ODataQuerySettings()).Count() 
                 : query.Count();
 
@@ -67,7 +68,8 @@ namespace EmployeeDirectory.API.Controllers
                 Location = s.Location,
                 Email = s.Email,
                 PhoneNumber = s.PhoneNumber,
-                Role = ""
+                Role = "",
+                FilterableFullName = s.FirstName + " " + s.MiddleInitial + " " + s.LastName + " " + s.SecondLastName
             }), new ODataQuerySettings()) as IQueryable<EmployeeModel>;
 
             // convert query to list to allow manipulation
