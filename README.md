@@ -24,4 +24,3 @@ Requirements For Build 1
 * HR (Human Resource) and Employee Roles
 * At least to include the following information: Name, Job Title, Location, Phone, Number, Email
 * Use email for authentication
-* Use latest technology available (Considered Angular JS, Kendo UI, jQuery, Bootstrap, Entity Framework 6, ASP.NET Web API 2, Token Based Authentication using Owin and Identity 2 among others)
