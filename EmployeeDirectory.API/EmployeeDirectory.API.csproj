@@ -172,6 +172,7 @@
     <Compile Include="Contexts\AppContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="ModelFactory\EmployeeModelFactory.cs" />
     <Compile Include="Models\IdentityModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\UserModel.cs" />

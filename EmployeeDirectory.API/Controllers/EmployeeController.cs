@@ -2,10 +2,12 @@
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.OData;
 using System.Web.Http.OData.Query;
+using EmployeeDirectory.API.ModelFactory;
 using EmployeeDirectory.API.Models;
 using EmployeeDirectory.API.Repositories;
 using Microsoft.AspNet.Identity;
@@ -18,12 +20,12 @@ namespace EmployeeDirectory.API.Controllers
     public class EmployeeController : ApiController
     {
         private readonly EmployeeRepository _employeeRepo;
-        private readonly AuthRepository _authRepo;
+        private readonly EmployeeModelFactory _employeeModelFactory;
 
         public EmployeeController()
         {
             _employeeRepo = new EmployeeRepository();
-            _authRepo = new AuthRepository();
+            _employeeModelFactory = new EmployeeModelFactory();
         }
 
         // GET api/employees
@@ -32,13 +34,32 @@ namespace EmployeeDirectory.API.Controllers
         public PageResult<EmployeeModel> GetEmployees(ODataQueryOptions options)
         {
             var query = _employeeRepo.Get();
+            long? count = 0;
+
+            // set total quantity
+            count = options.Filter != null
+                ? options.Filter.ApplyTo(query.Select(s => new EmployeeModel()
+                {
+                    Id = s.Id,
+                    FirstName = s.FirstName,
+                    UserName = s.UserName,
+                    MiddleInitial = s.MiddleInitial,
+                    LastName = s.LastName,
+                    SecondLastName = s.SecondLastName,
+                    JobTitle = s.JobTitle,
+                    Location = s.Location,
+                    Email = s.Email,
+                    PhoneNumber = s.PhoneNumber,
+                    Role = ""
+                }), new ODataQuerySettings()).Count() 
+                : query.Count();
 
             // create query
             var filteredQuery = options.ApplyTo(query.Select(s => new EmployeeModel()
             {
                 Id = s.Id,
-                UserName = s.UserName,
                 FirstName = s.FirstName,
+                UserName = s.UserName,
                 MiddleInitial = s.MiddleInitial,
                 LastName = s.LastName,
                 SecondLastName = s.SecondLastName,
@@ -47,7 +68,7 @@ namespace EmployeeDirectory.API.Controllers
                 Email = s.Email,
                 PhoneNumber = s.PhoneNumber,
                 Role = ""
-            })) as IQueryable<EmployeeModel>;
+            }), new ODataQuerySettings()) as IQueryable<EmployeeModel>;
 
             // convert query to list to allow manipulation
             var employees = filteredQuery != null ? filteredQuery.ToList() : new List<EmployeeModel>();
@@ -55,10 +76,8 @@ namespace EmployeeDirectory.API.Controllers
             // make sure to include the role description
             foreach (var employee in employees)
             {
-                employee.Role = _authRepo.GetRolesByUserId(employee.Id).First();
+                employee.Role = _employeeModelFactory.GetRoleName(employee.Id);
             }
-
-            long? count = query.Count();
 
             return new PageResult<EmployeeModel>(employees, null, count);
         }
@@ -70,9 +89,6 @@ namespace EmployeeDirectory.API.Controllers
             // find employee
             var employee = _employeeRepo.GetEmployee(id);
 
-            // get user roles (take first one as default)
-            var defaultUserRole = _authRepo.GetRolesByUserId(id).First();
-
             // check if employee was found
             if (employee == null) return NotFound();
 
@@ -81,20 +97,10 @@ namespace EmployeeDirectory.API.Controllers
 
             if (userRole != null)
             {
-                return Ok(new EmployeeModel
-                {
-                    Id = employee.Id,
-                    UserName = employee.UserName,
-                    FirstName = employee.FirstName,
-                    MiddleInitial = employee.MiddleInitial,
-                    LastName = employee.LastName,
-                    SecondLastName = employee.SecondLastName,
-                    JobTitle = employee.JobTitle,
-                    Location = employee.Location,
-                    Email = employee.Email,
-                    PhoneNumber = employee.PhoneNumber,
-                    Role = defaultUserRole
-                });
+                // create employee model
+                var employeeModel = _employeeModelFactory.Create(employee);
+
+                return Ok(employeeModel);
             }
 
             return NotFound();
@@ -111,7 +117,7 @@ namespace EmployeeDirectory.API.Controllers
             if (deleted)
             {
                 _employeeRepo.SaveAll();
-               return Ok();
+                return Ok();
             }
 
             return NotFound();
@@ -128,19 +134,18 @@ namespace EmployeeDirectory.API.Controllers
 
             // update role
             // update role if changed
-            var originalEmployeeRole = _authRepo.GetRolesByUserId(id).First();
+            var originalEmployeeRole = _employeeModelFactory.GetRoleName(id);
 
             // compare roles
             if (originalEmployeeRole != updatedEmployee.Role)
             {
                 // add role to user
-                _authRepo.ChangeUserCurrentRole(id, updatedEmployee.Role);
+                _employeeModelFactory.SetUserCurrentRole(id, updatedEmployee.Role);
             }
 
             if (updated)
             {
                 _employeeRepo.SaveAll();
-                _authRepo.SaveAll();
                 return Ok();
             }
 

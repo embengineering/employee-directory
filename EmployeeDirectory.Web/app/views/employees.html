@@ -1,43 +1,73 @@
-﻿<div class="container-fluid">
-    <div class="page-header">
-        <h1>
-            Employees
-            <button class="btn btn-sm btn-primary"
-                    data-ng-click="addEmployee()">
-                <span class="glyphicon glyphicon-plus"></span> Add Employee
-            </button>
-        </h1>
+﻿<div class="row">
+    <div class="col-xs-12  col-md-10 col-md-offset-1">
+        <div class="page-header ">
+            <h1>Employees</h1>
+        </div>
     </div>
-    <div kendo-listview k-data-source="source" k-template="listViewTemplate" class="row"></div>
-    <div kendo-pager k-data-source="source"></div>
+</div>
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-xs-12 col-sm-6 col-md-5">
+        <button class="btn btn-primary"
+                data-has-permission='HR'
+                data-ng-click="addEmployee()">
+            <span class="glyphicon glyphicon-plus"></span> Add Employee
+        </button>
+        <button class="btn btn-default"
+                data-ng-click="sortList()">
+            <span class="glyphicon" ng-class="{'glyphicon-sort-by-alphabet-alt': sortDir === 'asc', 'glyphicon-sort-by-alphabet': sortDir === 'desc' }"></span>
+        </button>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-5">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <i class="glyphicon glyphicon-search"></i>
+            </span>
+            <input type="text" class="form-control" placeholder="Filter"
+                   data-ng-model="filterPattern"
+                   data-ng-keyup="$event.keyCode == 13 ? filterList(filterPattern) : null">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button"
+                        data-ng-click="filterList(filterField)">
+                    Search
+                </button>
+            </span>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-md-10 col-md-offset-1">
+        <br/>
+        <div id="employeeList" kendo-listview k-data-source="source" k-template="listViewTemplate"></div>
+        <div kendo-pager k-data-source="source"></div>
 
-    <script type="text/x-kendo-angular-template" id="employeeListTemplate">
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="panel-title">{{ dataItem.firstName }} {{ dataItem.lastName }} ({{ dataItem.role || 'No Role Assigned' }})</div>
-                </div>
-                <div class="panel-body">
-                    <div class="container-fluid">
-                        <h4>{{ dataItem.jobTitle }}</h4>
-                        {{ dataItem.email }}
+        <script type="text/x-kendo-angular-template" id="employeeListTemplate">
+            <div class="col-md-5">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">{{ dataItem.firstName }} {{ dataItem.lastName }} ({{ dataItem.role || 'No Role Assigned' }})</div>
+                    </div>
+                    <div class="panel-body">
+                        <div>{{ dataItem.jobTitle }}</div>
+                        <div>{{ dataItem.email }}</div>
+                        <div>{{ dataItem.phoneNumber }}</div>
+                    </div>
+                    <div class="panel-footer"
+                         data-has-permission='HR'>
+                        <!-- if the user has HR permission then show button -->
+                        <button type="button" class="btn btn-sm btn-primary btn-sm"
+                                data-ng-click="editEmployee(dataItem.id)">
+                            <span class="glyphicon glyphicon-pencil"></span> Modify
+                        </button>
+                        <!-- if the user has HR permission then show button -->
+                        <button type="button" class="btn btn-sm btn-danger btn-sm"
+                                data-ng-click="deleteEmployee(dataItem.id)">
+                            <span class="glyphicon glyphicon-trash"></span> Delete
+                        </button>
                     </div>
                 </div>
-                <div class="panel-footer">
-                    <!-- if the user has HR permission then show button -->
-                    <button type="button" class="btn btn-sm btn-primary btn-sm"
-                            data-has-permission='HR'
-                            data-ng-click="editEmployee(dataItem.id)">
-                        <span class="glyphicon glyphicon-pencil"></span> Modify
-                    </button>
-                    <!-- if the user has HR permission then show button -->
-                    <button type="button" class="btn btn-sm btn-danger btn-sm"
-                            data-has-permission='HR'
-                            data-ng-click="deleteEmployee(dataItem.id)">
-                        <span class="glyphicon glyphicon-trash"></span> Delete
-                    </button>
-                </div>
             </div>
-        </div>
-    </script>
+        </script>
+    </div>
 </div>

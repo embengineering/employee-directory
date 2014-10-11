@@ -2,6 +2,81 @@
 app.controller('employeeCtrl', ['$scope', '$http', '$location', 'globalProperties', 'employeeSvc',
 function ($scope, $http, $location, globalProperties, employeeSvc) {
 
+    // helper method
+    // TODO: move again in a separate file
+    $.fn.fixItemHeight = function (itemSelector) {
+        var oCanvas = typeof itemSelector === 'undefined' ? $(this).parent() : $(this);
+        var oItems = typeof itemSelector === 'undefined' ? $(this) : oCanvas.find(itemSelector);
+        var fnSetSameHeight = function (aStack) {
+
+            var tallest = 0;
+            $.each(aStack, function (iIndex, oItem) {
+                var thisHeight = $(oItem).height();
+                if (thisHeight > tallest) {
+                    tallest = thisHeight;
+                }
+            });
+
+            // Set final height
+            $.each(aStack, function (iIndex, oItem) {
+                if (tallest == 0) {
+                    $(oItem).css('height', 'auto');
+                } else {
+                    $(oItem).css('min-height', tallest);
+                }
+            });
+        };
+
+        // Remove previous height assigned for items in canvas
+        oItems.css('height', 'auto').css('min-height', 'initial');
+
+        var aStack = [], oTmpItem = null, oItem = null, iPosPrev = 0, iPosNext = 0;
+        oItems.each(function (i, item) {
+
+            // Set webpart item as a jQuery object
+            oItem = $(item);
+
+            // Determine if first webpart and add to stack automatically
+            if (!oTmpItem) {
+                oTmpItem = oItem;
+                aStack.push(oTmpItem);
+            } else {
+
+                iPosPrev = oTmpItem.offset().top;
+                iPosNext = oItem.offset().top;
+
+                // Determine if previous webpart is in the same line (row) as next webpart
+                if (iPosNext == iPosPrev) {
+                    aStack.push(oTmpItem);
+                    aStack.push(oItem);
+                } else {
+
+                    // Format using the highest
+                    fnSetSameHeight(aStack);
+
+                    // Empty stack
+                    aStack = [];
+                    oTmpItem = null;
+                }
+
+                // Set current webpart as next temporary for comparation
+                oTmpItem = oItem;
+            }
+        });
+
+        // Determine if there are more than one web part in the stack
+        if (aStack.length > 1) {
+
+            // Format using the highest
+            fnSetSameHeight(aStack);
+
+            // Empty stack
+            aStack = [];
+            oTmpItem = null;
+        }
+
+    };
+
     // set template
     $scope.listViewTemplate = $("#employeeListTemplate").html();
 
@@ -29,10 +104,22 @@ function ($scope, $http, $location, globalProperties, employeeSvc) {
             }
         },
         schema: {
+            model: {
+                fields: {
+                    FirstName: { type: 'string' },
+                    LastName: { type: 'string' },
+                    MiddleInitial: { type: 'string' },
+                    SecondLastName: { type: 'string' },
+                    JobTitle: { type: 'string' },
+                    Location: { type: 'string' },
+                    PhoneNumber: { type: 'string' },
+                    Email: { type: 'string' }
+                }
+            },
             data: 'items',
             total: 'count'
         },
-        sort: [],
+        sort: [{ field: 'FirstName', dir: 'asc' }],
         pageSize: 6,
         serverFiltering: true, // <-- Do filtering server-side
         serverPaging: true, // <-- Do paging server-side
@@ -66,12 +153,45 @@ function ($scope, $http, $location, globalProperties, employeeSvc) {
         $location.path('/employees/add');
     };
 
-    /*
-     $($0).data('kendoListView').dataSource.query({
-        sort: { field: "Role", dir: "desc" },
-        page: 1,
-        pageSize: 20
-    });
-     */
+    // set default sorting direction
+    $scope.sortDir = 'asc';
+
+    // handle sorting
+    $scope.sortList = function (dir) {
+        // toggle sorting direction
+        $scope.sortDir = $scope.sortDir === 'asc' ? 'desc' : 'asc';
+        $scope.source.query({
+            sort: {
+                field: "FirstName", dir: $scope.sortDir
+            },
+            page: 1,
+            pageSize: 6
+        });
+    };
+
+    // set property for filtering pattern
+    $scope.filterPattern = '';
+
+    // handle filtering
+    $scope.filterList = function (value) {
+        // toggle sorting direction
+        $scope.source.query({
+            sort: {
+                field: "FirstName", dir: $scope.sortDir
+            },
+            filter: [
+                {
+                    logic: "or",
+                    filters: [
+                        { field: "FirstName", operator: "contains", value: value },
+                        { field: "LastName", operator: "contains", value: value },
+                        { field: "Email", operator: "contains", value: value }
+                    ]
+                }
+            ],
+            page: 1,
+            pageSize: 6
+        });
+    };
 
 }]);
