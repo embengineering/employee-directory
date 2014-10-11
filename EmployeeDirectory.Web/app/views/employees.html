@@ -30,7 +30,7 @@
                     <span class="input-group-addon">
                         <i class="glyphicon glyphicon-search"></i>
                     </span>
-                    <input type="text" class="form-control" placeholder="Filter"
+                    <input type="text" class="form-control" placeholder="Quick Search"
                            data-ng-model="filterPattern"
                            data-ng-keyup="$event.keyCode == 13 ? filterList(filterPattern) : null">
                     <span class="input-group-btn">
@@ -49,8 +49,10 @@
     <div class="col-xs-12 col-md-10 col-md-offset-1">
         <br />
         <div id="employeeList"
-             kendo-listview k-data-source="source"
-             k-template="listViewTemplate"></div>
+             kendo-listview
+             k-data-source="source"
+             k-template="listViewTemplate"
+             k-on-data-bound="onDataBound(kendoEvent)"></div>
         <div kendo-pager
              k-data-source="source"></div>
 

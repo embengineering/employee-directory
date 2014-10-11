@@ -31,32 +31,24 @@ namespace EmployeeDirectory.API.Controllers
         // GET api/employees
         [Authorize]
         [Route("")]
-        public PageResult<EmployeeModel> GetEmployees(ODataQueryOptions options)
+        public PageResult<EmployeeModel> GetEmployees(ODataQueryOptions<ApplicationUser> options)
         {
             var query = _employeeRepo.Get();
             long? count = 0;
 
             // set total quantity
             count = options.Filter != null
-                ? options.Filter.ApplyTo(query.Select(s => new EmployeeModel()
-                {
-                    Id = s.Id,
-                    FirstName = s.FirstName,
-                    UserName = s.UserName,
-                    MiddleInitial = s.MiddleInitial,
-                    LastName = s.LastName,
-                    SecondLastName = s.SecondLastName,
-                    JobTitle = s.JobTitle,
-                    Location = s.Location,
-                    Email = s.Email,
-                    PhoneNumber = s.PhoneNumber,
-                    Role = "",
-                    FilterableFullName = s.FirstName + " " + s.MiddleInitial + " " + s.LastName + " " + s.SecondLastName
-                }), new ODataQuerySettings()).Count() 
+                ? options.Filter.ApplyTo(query, new ODataQuerySettings()).Count() 
                 : query.Count();
 
             // create query
-            var filteredQuery = options.ApplyTo(query.Select(s => new EmployeeModel()
+            var filteredQuery = options.ApplyTo(query, new ODataQuerySettings()) as IQueryable<ApplicationUser>;
+
+            // convert query to list to allow manipulation
+            var employees = filteredQuery != null ? filteredQuery.ToList() : new List<ApplicationUser>();
+
+            // create a collection of EmployeeModel instead of ApplicationUser
+            var result = employees.Select(s => new EmployeeModel
             {
                 Id = s.Id,
                 FirstName = s.FirstName,
@@ -68,20 +60,10 @@ namespace EmployeeDirectory.API.Controllers
                 Location = s.Location,
                 Email = s.Email,
                 PhoneNumber = s.PhoneNumber,
-                Role = "",
-                FilterableFullName = s.FirstName + " " + s.MiddleInitial + " " + s.LastName + " " + s.SecondLastName
-            }), new ODataQuerySettings()) as IQueryable<EmployeeModel>;
+                Role = _employeeModelFactory.GetRoleName(s.Id)
+            });
 
-            // convert query to list to allow manipulation
-            var employees = filteredQuery != null ? filteredQuery.ToList() : new List<EmployeeModel>();
-
-            // make sure to include the role description
-            foreach (var employee in employees)
-            {
-                employee.Role = _employeeModelFactory.GetRoleName(employee.Id);
-            }
-
-            return new PageResult<EmployeeModel>(employees, null, count);
+            return new PageResult<EmployeeModel>(result, null, count);
         }
 
         [Authorize]

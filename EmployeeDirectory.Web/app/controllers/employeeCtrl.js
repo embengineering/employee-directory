@@ -177,19 +177,30 @@ function ($scope, $http, $location, globalProperties, employeeSvc) {
         // toggle sorting direction
         $scope.source.query({
             sort: {
-                field: 'FilterableFullName', dir: $scope.sortDir
+                field: 'FirstName', dir: $scope.sortDir
             },
             filter: [
                 {
                     logic: 'or',
                     filters: [
-                        { field: 'FilterableFullName', operator: 'contains', value: value }
+                        { field: 'FirstName', operator: 'contains', value: value },
+                        { field: 'LastName', operator: 'contains', value: value },
+                        { field: 'SecondLastName', operator: 'contains', value: value },
+                        { field: 'Email', operator: 'contains', value: value },
+                        { field: 'PhoneNumber', operator: 'contains', value: value },
+                        { field: 'Location', operator: 'contains', value: value }
                     ]
                 }
             ],
             page: 1,
             pageSize: 6
         });
+    };
+
+    // kendo listview Events
+    $scope.onDataBound = function (event) {
+        // TODO: fixing height of items in not working because angular databound is happening after listview is drawn
+        event.sender.items().fixItemHeight();
     };
 
 }]);
