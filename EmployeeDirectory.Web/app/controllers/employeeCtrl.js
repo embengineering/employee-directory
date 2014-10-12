@@ -199,7 +199,7 @@ function ($scope, $http, $location, globalProperties, employeeSvc) {
     // kendo listview Events
     $scope.onDataBound = function (event) {
         // TODO: fixing height of items in not working because angular databound is happening after listview is drawn
-        event.sender.items().fixItemHeight();
+        //event.sender.items().fixItemHeight();
     };
 
 }]);
