@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using EmployeeDirectory.API.Contexts;
@@ -24,6 +25,9 @@ namespace EmployeeDirectory.API.Models
         public string SecondLastName { get; set; }
         public string JobTitle { get; set; }
         public string Location { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public string FullName { get; private set; }
     }
 
     public class ApplicationRole : IdentityRole

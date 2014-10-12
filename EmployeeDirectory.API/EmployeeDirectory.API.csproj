@@ -168,7 +168,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="ContextMigrations\AppContextMigrationConfiguration.cs" />
+    <Compile Include="Migrations\201410112312509_AddEmployee.cs" />
+    <Compile Include="Migrations\201410112312509_AddEmployee.Designer.cs">
+      <DependentUpon>201410112312509_AddEmployee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\AppContextMigrationConfiguration.cs" />
     <Compile Include="Contexts\AppContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
@@ -195,6 +199,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201410112312509_AddEmployee.resx">
+      <DependentUpon>201410112312509_AddEmployee.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

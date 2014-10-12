@@ -14,10 +14,12 @@
         public string PhoneNumber { get; set; }
         public string Role { get; set; }
 
-        public string FullName {
-            get { return string.Format("{0}{1}{2}{3}", FirstName, " " + MiddleInitial, " " + LastName, " " + SecondLastName); }
+        public string FullName 
+        {
+            get 
+            {
+                return FirstName + (!string.IsNullOrEmpty(MiddleInitial) ? " " + MiddleInitial : "") + " " + LastName + (!string.IsNullOrEmpty(SecondLastName) ? " " + SecondLastName : ""); 
+            }
         }
-
-        public string FilterableFullName { get; set; }
     }
 }

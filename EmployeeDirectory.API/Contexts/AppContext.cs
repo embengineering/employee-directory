@@ -1,5 +1,5 @@
 ﻿using System.Data.Entity;
-using EmployeeDirectory.API.ContextMigrations;
+using EmployeeDirectory.API.Migrations;
 using EmployeeDirectory.API.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 

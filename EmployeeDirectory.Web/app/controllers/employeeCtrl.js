@@ -183,11 +183,10 @@ function ($scope, $http, $location, globalProperties, employeeSvc) {
                 {
                     logic: 'or',
                     filters: [
-                        { field: 'FirstName', operator: 'contains', value: value },
-                        { field: 'LastName', operator: 'contains', value: value },
-                        { field: 'SecondLastName', operator: 'contains', value: value },
+                        { field: 'FullName', operator: 'contains', value: value },
                         { field: 'Email', operator: 'contains', value: value },
                         { field: 'PhoneNumber', operator: 'contains', value: value },
+                        { field: 'JobTitle', operator: 'contains', value: value },
                         { field: 'Location', operator: 'contains', value: value }
                     ]
                 }
