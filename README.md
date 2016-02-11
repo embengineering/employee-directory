@@ -8,7 +8,10 @@ Employee-Directory
 How to Run It
 -------------
 
-In order to run this project, make sure you have VS2013 installed and MSSQL 2012. Project is already configured to run with your local IIS -- make sure is intalled too --. Database will be created automatically using Entity Framework (EF) Model-First -- once you do at last one request --.
+* Make sure you have at least VS2013 installed and MSSQL 2012. 
+* Project is already configured to run with IIS Express. 
+* Database will be created automatically using Entity Framework (EF) Model-First (once the application does at least one request).
+* Default Human Resource User (HR) is `hr@demo.com` with password `welcome`.
 
 How to Generate 30K Records
 ---------------------------
@@ -17,7 +20,7 @@ How to Generate 30K Records
 * This file was generated using Mockarro Realistic Test Data Generator `http://www.mockaroo.com/92231220`.
 * After running the application at least once and database was successfully created, run the SQL script file using MSSQL Management Studio or any other tool in order to properly generate all employees with their respective access.
 
-Requirements For Build 1
+App Requirements in Mind
 ------------------------
 
 * Search over 30K employees
