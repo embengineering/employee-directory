@@ -1,7 +1,7 @@
 Employee-Directory
 ==================
 
-![employee-directory.gif]({{site.baseurl}}/employee-directory.gif)
+![employee-directory.gif](https://raw.githubusercontent.com/emb0624/employee-directory/master/employee-directory.gif)
 
 * Employee directory built on Angular JS, Bootstrap, and Kendo UI
 * Token Based Authentication using ASP.NET Web API 2, Owin and Identity 2
