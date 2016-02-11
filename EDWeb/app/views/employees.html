@@ -1,0 +1,96 @@
+﻿<div class="row">
+    <div class="col-xs-12  col-md-10 col-md-offset-1">
+        <div class="page-header ">
+            <h1>Employees</h1>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-xs-12 col-md-10">
+        <div class="row">
+            <div class="col-sm-6 col-md-6">
+                <button class="btn btn-primary"
+                        data-has-permission="HR"
+                        data-ng-click="addEmployee()">
+                    <span class="glyphicon glyphicon-plus"></span> Add Employee
+                </button>
+                <button class="btn btn-default"
+                        data-ng-click="sortList()">
+                    <span class="glyphicon"
+                          data-ng-class="{'glyphicon-sort-by-alphabet-alt': sortDir === 'asc', 'glyphicon-sort-by-alphabet': sortDir === 'desc' }"></span>
+                </button>
+            </div>
+
+            <!-- Add the extra clearfix for only the required viewport -->
+            <div class="clearfix visible-xs-block"><br/></div>
+
+            <div class="col-sm-6 col-md-6">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-search"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Quick Search"
+                           data-ng-model="filterPattern"
+                           data-ng-keyup="$event.keyCode == 13 ? filterList(filterPattern) : null">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"
+                                data-ng-click="filterList(filterField)">
+                            Search
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-md-10 col-md-offset-1">
+        <br />
+        <div id="employeeList"
+             kendo-listview
+             k-data-source="source"
+             k-template="listViewTemplate"
+             k-on-data-bound="onDataBound(kendoEvent)"></div>
+        <div kendo-pager
+             k-data-source="source"></div>
+
+        <script type="text/x-kendo-angular-template" id="employeeListTemplate">
+            <div class="card">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title"><span class="glyphicon glyphicon-user"></span> {{dataItem.fullName}}</div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <small class="text-muted col-lg-4">Job Title</small>
+                            <div class="col-lg-4">{{dataItem.jobTitle || 'Not Specified'}}</div>
+                            <small class="text-muted col-lg-4">Email</small>
+                            <div class="col-lg-4">{{dataItem.email || 'Not Specified'}}</div>
+                            <small class="text-muted col-lg-4">Phone</small>
+                            <div class="col-lg-4">{{dataItem.phoneNumber || 'Not Specified'}}</div>
+                            <small class="text-muted col-lg-4">Location</small>
+                            <div class="col-lg-4">{{dataItem.location || 'Not Specified'}}</div>
+                            <small class="text-muted col-lg-4">Role</small>
+                            <div class="col-lg-4">{{ dataItem.role || 'No Role Assigned' }}</div>
+                        </div>
+                    </div>
+                    <div class="panel-footer"
+                         data-has-permission="HR">
+                        <!-- if the user has HR permission then show button -->
+                        <button type="button" class="btn btn-sm btn-primary btn-sm"
+                                data-ng-click="editEmployee(dataItem.id)">
+                            <span class="glyphicon glyphicon-pencil"></span> Modify
+                        </button>
+                        <!-- if the user has HR permission then show button -->
+                        <button type="button" class="btn btn-sm btn-danger btn-sm"
+                                data-ng-click="deleteEmployee(dataItem.id)">
+                            <span class="glyphicon glyphicon-trash"></span> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </script>
+    </div>
+</div>
