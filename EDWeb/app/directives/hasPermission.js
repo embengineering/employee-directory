@@ -3,24 +3,23 @@ app.directive('hasPermission', ['permissionSvc', function (permissionSvc) {
     return {
         link: function (scope, element, attrs) {
             if (!_.isString(attrs.hasPermission)) {
-                throw "hasPermission value must be a string";
+                throw "hasPermission value must be a string of roles separated by comma";
             }
 
-            var value = attrs.hasPermission.trim();
-            var notPermissionFlag = value[0] === '!';
-            if (notPermissionFlag) {
-                value = value.slice(1).trim();
-            }
+            var permissionsAllowed = attrs.hasPermission.split(/\,/).map(function (item) { return item.trim();  });
 
             function toggleVisibilityBasedOnPermission() {
-                var hasPermission = permissionSvc.hasPermission(value);
+                var hasPermission = permissionSvc.hasPermission(permissionsAllowed);
 
-                if (hasPermission && !notPermissionFlag || !hasPermission && notPermissionFlag)
+                if (hasPermission) {
                     element.show();
-                else
+                } else {
                     element.hide();
+                }
             }
+
             toggleVisibilityBasedOnPermission();
+
             scope.$on('permissionsChanged', toggleVisibilityBasedOnPermission);
         }
     };

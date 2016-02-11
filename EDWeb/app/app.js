@@ -14,19 +14,20 @@ app.config(function ($routeProvider, $httpProvider) {
 
     $routeProvider.when("/employees", {
         controller: "employeeCtrl",
-        templateUrl: "app/views/employees.html"
+        templateUrl: "app/views/employees.html",
+        permission: ['HR', 'EMPLOYEE']
     });
 
     $routeProvider.when('/employees/add', {
         templateUrl: 'app/views/addEmployee.html',
         controller: 'manageEmployeeCtrl',
-        permission: 'HR'
+        permission: ['HR']
     });
 
     $routeProvider.when('/employees/edit/:id', {
         templateUrl: 'app/views/manageEmployee.html',
         controller: 'manageEmployeeCtrl',
-        permission: 'HR'
+        permission: ['HR']
     });
 
     $routeProvider.otherwise({ redirectTo: "/employees" });

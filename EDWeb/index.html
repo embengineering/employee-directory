@@ -13,22 +13,21 @@
     <!-- Load app main css -->
     <link href="content/css/site.css" rel="stylesheet" />
 </head>
-<body>
+<body ng-cloak>
     <div class="navbar navbar-default navbar-fixed-top" role="navigation" data-ng-controller="indexCtrl">
         <div class="container">
             <div class="navbar-header">
-                <button class="btn btn-success navbar-toggle" data-ng-click="navbarExpanded = !navbarExpanded">
+                <button class="btn btn-success navbar-toggle"
+                        data-ng-class="{ hidden: !authentication.isAuth }"
+                        data-ng-click="navbarExpanded=!navbarExpanded" >
                     <span class="glyphicon glyphicon-chevron-down"></span>
                 </button>
                 <a class="navbar-brand" href="#/">Directory</a>
             </div>
-            <div class="collapse navbar-collapse" data-collapse="!navbarExpanded">
+            <div class="navbar-collapse" ng-class="{ collapse: !navbarExpanded }">
                 <ul class="nav navbar-nav navbar-right">
-                    <li data-ng-hide="!authentication.isAuth"><a href="#">Welcome {{authentication.userName}}</a></li>
-                    <!--<li data-ng-hide="!authentication.isAuth"><a href="#/employees">Employees</a></li>-->
-                    <li data-ng-hide="!authentication.isAuth"><a href="" data-ng-click="logOut()"><span class="glyphicon glyphicon-lock"></span> Logout</a></li>
-                    <!--<li data-ng-hide="authentication.isAuth"> <a href="#/login">Login</a></li>-->
-                    <!--<li data-ng-hide="authentication.isAuth"> <a href="#/signup">Sign Up</a></li>-->
+                    <li data-ng-hide="!authentication.isAuth" data-ng-click="navbarExpanded=!navbarExpanded"><a href="#">Welcome {{authentication.userName}}</a></li>
+                    <li data-ng-hide="!authentication.isAuth" data-ng-click="navbarExpanded=!navbarExpanded"><a href="" data-ng-click="logOut()"><span class="glyphicon glyphicon-lock"></span> Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -37,25 +36,6 @@
         <div data-ng-view="">
         </div>
     </div>
-    
-    <!-- generic confirmation dialog 
-    <div class="modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Confirmation</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure do you want to continue?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Continue</button>
-                </div>
-            </div>
-        </div>
-    </div>-->
     <hr />
     <div id="footer">
         <div class="container">
