@@ -12,6 +12,7 @@ How to Run It
 * Project is already configured to run with IIS Express. 
 * Database will be created automatically using Entity Framework (EF) Model-First (once the application does at least one request).
 * Default Human Resource User (HR) is `hr@demo.com` with password `welcome`.
+* Run the `Database\AspNetUsers.sql` file to fills up database (optional)
 
 How to Generate 30K Records
 ---------------------------
